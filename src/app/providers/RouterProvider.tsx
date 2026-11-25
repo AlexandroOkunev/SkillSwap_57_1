@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import { lazy } from 'react'
 import { ROUTES } from '@/shared/lib/constants'
 import { MainLayout, AuthLayout } from '@/app/layouts'
@@ -21,7 +21,7 @@ const RegisterPage = lazy(() => import('@/pages/RegisterPage'))
 
 export function AppRouter() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route element={<MainLayout />}>
           <Route path={ROUTES.HOME} element={<CatalogPage />} />
@@ -47,6 +47,6 @@ export function AppRouter() {
           <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
