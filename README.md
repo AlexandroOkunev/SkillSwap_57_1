@@ -1,72 +1,90 @@
-# SkillSwap
+[![Deploy Status](https://github.com/AlexandroOkunev/SkillSwap_57_1/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/AlexandroOkunev/SkillSwap_57_1/actions/workflows/deploy-pages.yml)
+[![CI](https://github.com/AlexandroOkunev/SkillSwap_57_1/actions/workflows/ci.yml/badge.svg)](https://github.com/AlexandroOkunev/SkillSwap_57_1/actions/workflows/ci.yml)
 
-Платформа обмена навыками.
+# SkillSwap 🔄
+
+Платформа обмена навыками: пользователи предлагают то, чему могут научить, и ищут тех, кто научит их тому, что хотят освоить. Дипломный командный проект на React + TypeScript с архитектурой Feature-Sliced Design.
 
 ![Скриншот SkillSwap](./docs/screenshot.png)
----
 
-## Быстрый старт
+## 🚀 Демо
 
-```bash
-npm install
-npm run dev
-```
+- **GitHub Pages:** [https://alexandrookunev.github.io/SkillSwap_57_1/](https://alexandrookunev.github.io/SkillSwap_57_1/)
+  *(✅ Работает в РФ без VPN)*
 
-Открой [http://localhost:5173](http://localhost:5173)
+## 🛠 Стек
 
----
+- **Core:** React 18, TypeScript
+- **State:** Redux Toolkit, типизированные хуки `useAppDispatch` / `useAppSelector`
+- **Routing:** React Router v6 (HashRouter для статического хостинга, lazy-загрузка страниц)
+- **Формы/валидация:** React Hook Form + Yup
+- **Сборка:** Vite, vite-plugin-svgr (SVG как React-компоненты)
+- **Тесты:** Vitest + React Testing Library
+- **Качество:** ESLint, Stylelint, Prettier
+- **CI/CD:** GitHub Actions, GitHub Pages
 
-## State management
+## 🧩 Архитектура
 
-Проект использует **Redux Toolkit**. Store настроен в `src/store/index.ts`.
+Проект построен по методологии **Feature-Sliced Design**: слои `app / widgets / features / entities / shared` с чётким разделением ответственности и зависимостями только «сверху вниз». Это позволяет изолировать бизнес-логику, переиспользовать UI-кит и масштабировать кодовую базу.
 
-Для работы со store используй типизированные хуки из `src/store/hooks.ts` — `useAppDispatch` и `useAppSelector` вместо оригинальных из react-redux.
+- `src/api/` — функции загрузки данных из статического JSON-слоя (`public/db/*.json`).
+- `src/store/` — конфигурация Redux store и типизированные хуки.
+- `src/entities/` — доменные модели (Skill, User, Request) и их слайсы.
+- `src/features/` — фичи: auth, favorites, notifications, swap-request.
+- `src/widgets/` — составные блоки: Header, SkillCard, FiltersSidebar, RegisterStep*.
+- `src/shared/` — атомарный UI-кит (Input, Popover, Autocomplete, Select, Tag, Avatar и др.), хуки, типы, константы.
 
----
+## ✨ Функционал
 
-## Структура проекта
+- Каталог навыков с секциями «Популярное / Новое / Рекомендуем».
+- Многокритериальная фильтрация: режим, навыки (с indeterminate-состояниями), пол автора, город; счётчик активных фильтров и сброс.
+- Поиск с автодополнением (Autocomplete на базе Popover, ARIA-атрибуты).
+- Детальная страница навыка, избранное, заявки на обмен с персистентностью в `localStorage`.
+- Многошаговая регистрация с каскадной валидацией и загрузкой изображений.
+- Авторизация через JWT-подобный токен, защищённые маршруты (`PrivateRoute`).
+- Уведомления, тёмная тема, адаптивная вёрстка.
 
-```
-src/
-├── api/                  # fetch-функции для загрузки JSON-моков
-├── app/
-│   ├── providers/        # StoreProvider, RouterProvider
-│   └── styles/           # global.css с CSS-переменными
-├── entities/             # Доменные модели: Skill, User, Request
-│   ├── skill/
-│   ├── user/
-│   └── request/
-├── features/             # Фичи: auth, skills, favorites, requests
-├── pages/                # Страницы приложения
-├── shared/
-│   ├── hooks/            # useDebounce, useLocalStorage
-│   ├── lib/              # constants, helpers
-│   ├── types/            # общие TypeScript-типы
-│   └── ui/               # атомарные компоненты
-├── store/                # Redux store и типизированные хуки
-└── widgets/              # Составные блоки: Header, SkillCard, FiltersBar
+## 👥 Командный проект и моя роль
 
-public/
-└── db/
-    ├── skills.json       # Добавь сюда моки навыков
-    └── users.json        # Добавь сюда моки пользователей
-```
+Диплом выполнен командой (когорты 57, Яндекс Практикум). Исходный репозиторий команды: [PM-YandexPracticum/SkillSwap_57_1](https://github.com/PM-YandexPracticum/SkillSwap_57_1). В этом форке — моя зона ответственности и настройка деплоя.
 
----
+Мой вклад (по PR-ам):
+- **UI-кит:** универсальный `Input` (варианты, состояния, валидация на CSS-переменных), управляемый `Popover`, `Autocomplete` с фильтрацией подсказок и ARIA.
+- **Фильтрация:** виджет `FiltersSidebar` с indeterminate-чекбоксами, счётчиком и сбросом.
+- **Регистрация:** 3-й шаг — форма добавления навыка с каскадной валидацией и загрузкой изображений; модалка `RegistrationSuccessModal`.
+- **Заявки на обмен:** Redux-срез с сохранением в `localStorage`, кнопка с проверкой авторизации, модалка успеха, покрытие unit-тестами.
+- **Графика:** импорт SVG через `vite-plugin-svgr`, адаптация ~40 иконок/иллюстраций под `currentColor`.
+- **Деплой:** настройка GitHub Actions для автодеплоя на GitHub Pages, относительные пути к данным и ассетам через `import.meta.env.BASE_URL`.
 
-## Моки данных
+## 📦 Данные
 
-Файлы `public/db/skills.json` и `public/db/users.json` **пустые**.
+Справочные данные лежат в `public/db/` и отдаются статически (без внешнего бэкенда): `skills.json`, `users.json`, `categories.json`, `cities.json`, `notifications.json`. Структура объектов описана в `src/shared/types/index.ts`.
 
-### Тестовый аккаунт
-- Email: ivan@mail.ru
-- Пароль: Baraban2024
+### Тестовый аккаунт для входа
+- Email: `ivan@mail.ru`
+- Пароль: `Baraban2024`
 
-Структура объектов описана в `src/shared/types/index.ts`.
+## ⚙️ Запуск локально
 
----
+**Требования:** Node.js 18+
 
-## Доступные скрипты
+1. Установка:
+
+        git clone https://github.com/AlexandroOkunev/SkillSwap_57_1.git
+        cd SkillSwap_57_1
+        npm install
+
+2. Режим разработки:
+
+        npm run dev
+
+    Приложение будет доступно по адресу: `http://localhost:5173`
+
+3. Продакшен-сборка:
+
+        npm run build
+
+## 🧪 Тесты и качество
 
 | Скрипт | Что делает |
 |--------|------------|
@@ -75,77 +93,31 @@ public/
 | `npm run lint` | Проверка ESLint + Stylelint |
 | `npm run lint:fix` | Автоисправление lint-ошибок |
 | `npm run format` | Форматирование через Prettier |
-| `npm run test` | Запуск тестов |
+| `npm run test` | Запуск unit-тестов (Vitest) |
 | `npm run test:watch` | Тесты в watch-режиме |
-| `npm run test:coverage` | Покрытие (цель ≥ 70%) |
+| `npm run test:coverage` | Покрытие тестами |
 
----
+## 🔀 Роутинг
 
-## Роутинг
+Маршруты объявлены в `src/shared/lib/constants.ts` → `ROUTES`. Lazy-загрузка страниц настроена в `src/app/providers/RouterProvider.tsx`. Защищённые маршруты оборачиваются в `PrivateRoute` из `src/features/auth/ui/` — неавторизованный пользователь перенаправляется на `/login`.
 
-Маршруты объявлены в `src/shared/lib/constants.ts` → `ROUTES`.
+Для корректной работы на статическом хостинге используется `HashRouter`.
 
-Lazy-загрузка уже настроена в `src/app/providers/RouterProvider.tsx`.
+## 🔐 Переменные окружения
 
-Для защищённых маршрутов используй компонент `PrivateRoute` из `src/features/auth/ui/` — он
-перенаправляет неавторизованного пользователя на `/login`.
+Создай `.env.local` для локальных настроек (исключён из git):
 
----
-
-## Переменные окружения
-
-Создай `.env.local` для локальных настроек (в `.gitignore` уже исключён):
-
-```
-VITE_APP_TITLE=SkillSwap
-```
+    VITE_APP_TITLE=SkillSwap
 
 Доступ в коде: `import.meta.env.VITE_APP_TITLE`
 
----
+## 🔄 CI/CD
 
-## Git-процесс
+GitHub Actions (`ci.yml`) на каждый push/PR прогоняет:
 
-```
-main        ← только стабильный код, не трогаем напрямую
-└── develop ← основная ветка разработки, PR только сюда
-    └── feature/catalog-filters   ← твоя задача
-        └── → PR → code review → merge в develop
-```
+    npm run lint
+    tsc --noEmit
+    npm run test
+    npm run build
 
-Перед началом каждой задачи:
-```bash
-git checkout develop
-git pull
-git checkout -b feature/название-задачи
-```
-
-После завершения:
-```bash
-git push -u origin feature/название-задачи
-# открываешь PR из своей ветки → в develop
-```
-
-Ветки называй: `feature/`, `fix/`, `refactor/`, `docs/`, `chore/`
-
-Коммиты по [Conventional Commits](https://www.conventionalcommits.org/ru/):
-```
-feat: добавить фильтр по категориям
-fix: исправить отображение карточки на мобильном
-refactor: вынести логику избранного в хук
-```
-
-PR — не больше ~200 строк изменений. Вливает только тимлид или его заместитель. `--force` и `merge --no-ff` в `develop` запрещены.
-
----
-
-## CI
-
-GitHub Actions запускается на каждый push и PR:
-- `npm run lint`
-- `tsc --noEmit`
-- `npm run test`
-- `npm run build`
-
-Если CI красный — PR не мержится.
-
+GitHub Actions (`deploy-pages.yml`) собирает проект через Vite и публикует на GitHub Pages при пуше в `develop`. Пайплайн использует `environment: github-pages` и `concurrency` для стабильного деплоя без конфликта артефактов.

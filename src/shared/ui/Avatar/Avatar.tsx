@@ -11,6 +11,6 @@ type TAvatarProps = {
 
 export const Avatar: FC<TAvatarProps> = ({ src, alt, size, className = '' }) => (
   <div className={`${styles.container} ${styles[`size_${size}`]} ${className}`}>
-    {src ? <img src={src} alt={alt} className={styles.image} /> : <UserAvatar className={styles.emptyAvatar}/>}
+    {src ? <img src={`${import.meta.env.BASE_URL}${src.replace(/^\//, '')}`} alt={alt} className={styles.image} /> : <UserAvatar className={styles.emptyAvatar}/>}
   </div>
 )
